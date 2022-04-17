@@ -11,7 +11,10 @@ Build an application which is able to:
 * [Vercel](https://vercel.com/)
 
 ## Setup
-First clone the repository using 
+First clone the repository locally
 
-Then npm install command in the project folder
-`npm install`
+Then npm install command in the project folder  
+```npm install```
+
+To run the project locally use the command  
+```npm run dev```
