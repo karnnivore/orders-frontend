@@ -1,8 +1,9 @@
-import { Container, Paper, Typography } from "@mui/material"
+import { Paper } from "@mui/material"
 import { useState } from "react"
-import { AllOrders, IOrders } from "../../components/orders/AllOrders"
+import { AllOrders } from "../../components/orders/AllOrders"
 import { OrderFilters } from "../../components/orders/OrderFilters"
 import { IFilters } from "../../models/IFilters"
+import { IOrders } from "../../models/IOrders"
 import data from './orders.json'
 
 const orders = data.orders 

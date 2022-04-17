@@ -1,7 +1,7 @@
 import { Button, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import styles from "./css/OrderFilters.module.css"
-import { IOrders } from "./AllOrders"
+import { IOrders } from "../../models/IOrders"
 import { useTransformToUpper } from "../../hooks/useTransformToUpper"
 import { IFilters } from "../../models/IFilters"
 
@@ -175,6 +175,7 @@ export const OrderFilters = ({
           <Button
             variant="contained"
             onClick={resetFilters}
+            color='warning'
           >
             Reset
           </Button>

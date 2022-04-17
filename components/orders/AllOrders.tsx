@@ -1,24 +1,10 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { OrderRow } from './OrderRow'
-import data from '../../pages/orders/orders.json'
 import { IFilters } from '../../models/IFilters'
-
-const orders = data.orders 
-
-export interface IOrders {
-  id: string,
-  created: string,
-  status: string,
-  customer: string,
-  sku: string,
-  photo: string,
-  condition: string,
-  size: string,
-  type: string,
-  origin_address: string,
-  shipping_address: string
-}
+import { UpdateOrder } from './updateOrder/UpdateOrder'
+import { IOrders } from '../../models/IOrders'
+import styles from './css/AllOrders.module.css'
 
 interface IAllOrders {
   orderData: IOrders[]
@@ -30,6 +16,14 @@ export const AllOrders = ({
   filters
 }: IAllOrders) => {
   const [filteredData, setFilteredData] = useState<IOrders[]>(orderData)
+  // pagination 
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
+  const [emptyRows, setEmptyRow] = useState(0)
+  // state for update modal
+  const [open, setOpen] = useState(false)
+  const handleUpdateOpen = () => setOpen(true)
+  const handleUpdateClose = () => setOpen(false)
 
   // filter data
   useEffect(() => {
@@ -62,11 +56,9 @@ export const AllOrders = ({
     })
   }, [])
 
-  // pagination 
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(5)
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0
+  useEffect(() => {
+    setEmptyRow(page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0)
+  }, [])
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -84,7 +76,17 @@ export const AllOrders = ({
 
   return(
     <>
-      <TableContainer component={Paper}>
+      <div className={styles.btnContainer}>
+        <Button
+          variant='contained'
+          size='large'
+          color='secondary'
+        >
+          Create Order
+        </Button>
+        </div>
+    
+      <TableContainer>
         <Table sx={{ minWidth: 600 }} aria-label='orders table'>
           <TableHead sx={{ background: '#FB8500'}}>
             <TableRow>
@@ -103,7 +105,7 @@ export const AllOrders = ({
             {(rowsPerPage > 0 
               ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : filteredData).map((row:IOrders, index: number) => (
-              <OrderRow rowData={row} index={index} key={index}/>
+              <OrderRow rowData={row} index={index} key={index} handleUpdateOpen={handleUpdateOpen}/>
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows}}>
@@ -115,12 +117,14 @@ export const AllOrders = ({
       </TableContainer>
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
+        component='div'
         count={filteredData.length}
         page={page}
         rowsPerPage={rowsPerPage}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <UpdateOrder open={open} handleUpdateClose={handleUpdateClose}/>
     </>
   )
 }

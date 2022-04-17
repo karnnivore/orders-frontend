@@ -1,17 +1,19 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
 import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTransformToUpper } from '../../hooks/useTransformToUpper'
-import { IOrders } from './AllOrders'
+import { IOrders } from '../../models/IOrders'
 import { StatusBadge } from './StatusBadge'
 
 interface IOrderRow {
   rowData: IOrders
   index: number
+  handleUpdateOpen: () => void
 }
 export const OrderRow = (props: IOrderRow) => {
   const row = props.rowData
   const [open, setOpen] = useState(false)
+
   return (
     <React.Fragment>
       <TableRow style={props.index % 2 ? { background: '#e6e6e6' } : { background: 'white' }}>
@@ -37,6 +39,7 @@ export const OrderRow = (props: IOrderRow) => {
           <Button
             variant='contained'
             size='small'
+            onClick={props.handleUpdateOpen}
           >
             Update
           </Button>
@@ -45,8 +48,8 @@ export const OrderRow = (props: IOrderRow) => {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Card onClick={() => setOpen(false)}>
-              <CardActionArea sx={{ display: 'flex' }}>
+            <Card onClick={() => setOpen(false)} sx={{ width: 'full-width'}}>
+              <CardActionArea>
                 <CardContent>
                   <Typography gutterBottom variant='h5' component='div' sx={{ paddingLeft: 2}}>
                     SKU: <span style={{fontWeight: 300}}>{row.sku}</span>
@@ -68,7 +71,7 @@ export const OrderRow = (props: IOrderRow) => {
                 </CardContent>
                 <CardMedia
                   component='img'
-                  sx={{ height: 150, width: 150}}
+                  sx={{ height: 500, width: 500}}
                   image={row.photo}
                   alt="Shipping container picture"
                 />
