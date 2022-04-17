@@ -1,0 +1,19 @@
+.formControl {
+    margin: 1px;
+    min-width: 120px;
+}
+
+.filterContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.resetContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paper {
+    padding: 30px 12px;
+}
