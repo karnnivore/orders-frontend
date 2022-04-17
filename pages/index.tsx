@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { Container } from '@mui/material'
-import { Orders } from './orders'
+import Orders from './orders'
 
 export default function Home() {
   return (
