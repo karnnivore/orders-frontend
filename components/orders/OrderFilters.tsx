@@ -97,7 +97,7 @@ export const OrderFilters = ({
       </div>
       <div className={styles.filterContainer}>
         <div className={styles.filters}>
-          <FormControl className={styles.formControl}>
+          <FormControl sx={{ minWidth: 120, marginRight: 2}}>
             <InputLabel>Status</InputLabel>
             <Select
               value={filters.status}
@@ -110,7 +110,7 @@ export const OrderFilters = ({
               <MenuItem value={'delivered'}>Delivered</MenuItem>
             </Select>
           </FormControl>
-          <FormControl className={styles.formControl}>
+          <FormControl sx={{ minWidth: 120, marginRight: 2}}>
             <InputLabel>Size</InputLabel>
             <Select
               value={filters.size}
@@ -130,7 +130,7 @@ export const OrderFilters = ({
               })}
             </Select>
           </FormControl>
-          <FormControl className={styles.formControl}>
+          <FormControl sx={{ minWidth: 120, marginRight: 2}}>
             <InputLabel>Condition</InputLabel>
             <Select
               value={filters.condition}
@@ -150,7 +150,7 @@ export const OrderFilters = ({
               })}
             </Select>
           </FormControl>
-          <FormControl className={styles.formControl}>
+          <FormControl sx={{ minWidth: 120, marginRight: 2}}>
             <InputLabel>Type</InputLabel>
             <Select
               value={filters.type}
