@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import styles from '../css/StatusBadge.module.css'
+import styles from './css/StatusBadge.module.css'
 
 interface IStatusBadge {
   status: string

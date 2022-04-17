@@ -1,9 +1,9 @@
 import { Button, FormControl, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Typography } from "@mui/material"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
-import styles from "../css/OrderFilters.module.css"
+import styles from "./css/OrderFilters.module.css"
 import { IOrders } from "./AllOrders"
 import { useTransformToUpper } from "../../hooks/useTransformToUpper"
-import { IFilters } from ".."
+import { IFilters } from "../../models/IFilters"
 
 
 interface IOrderFilters {

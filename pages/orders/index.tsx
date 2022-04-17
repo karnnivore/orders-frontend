@@ -1,17 +1,11 @@
 import { Container, Paper, Typography } from "@mui/material"
 import { useState } from "react"
-import { AllOrders, IOrders } from "./components/AllOrders"
-import { OrderFilters } from "./components/OrderFilters"
+import { AllOrders, IOrders } from "../../components/orders/AllOrders"
+import { OrderFilters } from "../../components/orders/OrderFilters"
+import { IFilters } from "../../models/IFilters"
 import data from './orders.json'
 
 const orders = data.orders 
-
-export interface IFilters {
-  status: string
-  size: string
-  condition: string
-  type: string
-}
 
 export const Orders = () => {
   const [orderData, setOrderData] = useState<IOrders[]>(orders)

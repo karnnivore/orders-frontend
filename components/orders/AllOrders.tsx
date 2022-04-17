@@ -1,8 +1,8 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { OrderRow } from './OrderRow'
-import data from '../orders.json'
-import { IFilters } from '..'
+import data from '../../pages/orders/orders.json'
+import { IFilters } from '../../models/IFilters'
 
 const orders = data.orders 
 
