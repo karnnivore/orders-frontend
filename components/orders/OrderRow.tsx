@@ -75,7 +75,7 @@ export const OrderRow = (props: IOrderRow) => {
                 </CardContent>
                 <CardMedia
                   component='img'
-                  sx={{ height: 500, width: 500}}
+                  sx={{ height: 500, width: 500, marginLeft: 'auto', marginRight: 'auto'}}
                   image={row.photo}
                   alt="Shipping container picture"
                 />
