@@ -3,3 +3,9 @@
     justify-content: flex-end;
     margin: 10px;
 }
+
+.sortDirectionCtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

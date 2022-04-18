@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { OrderRow } from './OrderRow'
 import { IFilters } from '../../models/IFilters'
@@ -6,6 +6,8 @@ import { UpdateOrder } from './updateOrder/UpdateOrder'
 import { IOrders } from '../../models/IOrders'
 import styles from './css/AllOrders.module.css'
 import Link from 'next/link'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
 interface IAllOrders {
   orderData: IOrders[]
@@ -25,7 +27,6 @@ export const AllOrders = ({
   const [open, setOpen] = useState(false)
   const handleUpdateOpen = () => setOpen(true)
   const handleUpdateClose = () => setOpen(false)
-  const [loaded, setLoaded] = useState(false)
   const [order, setOrder] = useState<IOrders>({
     id: '',
     created: '',
@@ -38,6 +39,11 @@ export const AllOrders = ({
     type: '',
     origin_address: '',
     shipping_address: ''
+  })
+
+  const [sortObj, setSortObj] = useState({
+    column: '',
+    sortDirection: ''
   })
 
   // filter data
@@ -61,17 +67,8 @@ export const AllOrders = ({
 
   // Sort data by date created initially
   useEffect(() => {
-    let sortedOrders = filteredData
-    sortedOrders.sort((a, b) => {
-      if (Date.parse(a.created) < Date.parse(b.created)) 
-        return 1
-      if (Date.parse(a.created) > Date.parse(b.created))
-        return -1
-      return 0
-    })
-    setFilteredData(sortedOrders)
-    setLoaded(true)
-  }, [filteredData, filters])
+    dateHeaderSort()
+  }, [])
 
   useEffect(() => {
     setEmptyRow(page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0)
@@ -91,10 +88,129 @@ export const AllOrders = ({
     setPage(0)
   }
 
+  // function to sort table columns
+  const tableHeaderSort = (colName: string) => {
+    let sortedData = filteredData
+    if (sortObj.column != colName){
+      setSortObj({
+        column: colName,
+        sortDirection: 'asc'
+      })
+    } else {
+      if (sortObj.sortDirection === 'desc') {
+        setSortObj({
+          ...sortObj,
+          sortDirection: 'asc'
+        })
+      } else {
+        setSortObj({
+          ...sortObj,
+          sortDirection: 'desc'
+        })
+      }
+    }
+    if (sortObj.sortDirection === 'desc') {
+      sortedData.sort((a, b) => {
+        return a[colName].localeCompare(b[colName])
+      })
+    } 
+    if (sortObj.sortDirection === 'asc') {
+      sortedData.sort((a, b) => {
+        return b[colName].localeCompare(a[colName])
+      })
+    }
+    setFilteredData(sortedData)
+    console.log("data sorted: ", sortedData)
+  }
+
+  // function to sort date header
+  const dateHeaderSort = () => {
+    let sortedData = filteredData
+    if (sortObj.column !== 'created') {
+      setSortObj({
+        column: 'created',
+        sortDirection: 'asc'
+      })
+    } else {
+      if (sortObj.sortDirection === 'desc') {
+        setSortObj({
+          ...sortObj,
+          sortDirection: 'asc'
+        })
+      } else {
+        setSortObj({
+          ...sortObj,
+          sortDirection: 'desc'
+        })
+      }
+    }
+    if (sortObj.sortDirection === 'desc') {
+      sortedData.sort((a, b) => {
+        if (Date.parse(a.created) > Date.parse(b.created)) 
+          return 1
+        if (Date.parse(a.created) < Date.parse(b.created))
+          return -1
+      })
+    }
+    if (sortObj.sortDirection === 'asc') {
+      sortedData.sort((a, b) => {
+        if (Date.parse(a.created) < Date.parse(b.created)) 
+          return 1
+        if (Date.parse(a.created) > Date.parse(b.created))
+          return -1
+      })
+    }
+  }
+
+  // function to generate sortable table columns
+  const generateTableCell = (objName: string, displayString: string) => {
+    if (sortObj.column === objName){
+      return (
+        <TableCell
+          onClick={() => tableHeaderSort(objName)}
+          align='center'
+        >
+          {sortObj.sortDirection === 'asc' ? 
+            <div className={styles.sortDirectionCtn}>
+              {displayString}
+              <ArrowDropUpIcon/> 
+            </div>
+            : 
+            <div className={styles.sortDirectionCtn}>
+              {displayString}
+              <ArrowDropDownIcon/>
+            </div>
+          }
+        </TableCell>
+      )
+    } else {
+      return (
+        <TableCell
+          onClick={() => tableHeaderSort(objName)}
+          align={objName === 'status' ? 'center' : 'left'}
+        >
+          {displayString}
+        </TableCell>
+      )
+    }
+  }
+
+  const generateHeaders = () => {
+    const headers = [
+      {objName: 'id', displayString: 'Id'},
+      {objName: 'customer', displayString: 'Customer'},
+      {objName: 'size', displayString: 'Size'},
+      {objName: 'condition', displayString: 'Condition'},
+      {objName: 'type', displayString: 'Type'},
+      {objName: 'status', displayString: 'Status'}
+    ]
+    return headers.map(header => {
+      return generateTableCell(header.objName, header.displayString)
+    })
+  }
+
   return(
     <>
-      {loaded &&
-      <>
       <div className={styles.btnContainer}>
         <Link
           href={{
@@ -116,13 +232,30 @@ export const AllOrders = ({
           <TableHead sx={{ background: '#FB8500'}}>
             <TableRow>
               <TableCell align='center'>Info</TableCell>
-              <TableCell>Date Created</TableCell>
-              <TableCell>ID</TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>Size</TableCell>
-              <TableCell>Condition</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell align='center'>Status</TableCell>
+              {sortObj.column === 'created' ?
+              <TableCell
+                onClick={dateHeaderSort}
+              >
+                {sortObj.sortDirection === 'asc' ?
+                  <div className={styles.sortDirectionCtn}>
+                    Date Created 
+                    <ArrowDropUpIcon/>
+                  </div>
+                  :
+                  <div className={styles.sortDirectionCtn}>
+                    Date Created 
+                    <ArrowDropDownIcon/>
+                  </div>
+                }
+              </TableCell>
+              : 
+              <TableCell 
+                onClick={dateHeaderSort}
+              >
+                Date Created
+              </TableCell>
+              }
+              {generateHeaders()}
               <TableCell align='center'>Action</TableCell>
             </TableRow>
           </TableHead>
@@ -150,8 +283,6 @@ export const AllOrders = ({
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <UpdateOrder open={open} handleUpdateClose={handleUpdateClose} order={order}/>
-      </>
-      }
     </>
   )
 }
