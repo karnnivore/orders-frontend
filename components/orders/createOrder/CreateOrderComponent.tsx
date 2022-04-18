@@ -1,12 +1,13 @@
 import { Box, Button, Container, Paper, TextField, Typography } from "@mui/material"
-import React, { useState } from "react"
+import Link from "next/link"
+import React, { useEffect, useState } from "react"
 import { IOrders } from "../../../models/IOrders"
 import styles from "../css/CreateOrderComponent.module.css"
 
 export const CreateOrderComponent = () => {
   const [newOrder, setNewOrder] = useState<IOrders>({
-    id: 'sfs',
-    created: 'sfsf',
+    id: '',
+    created: '',
     status: '',
     customer: '',
     sku: '',
@@ -18,14 +19,28 @@ export const CreateOrderComponent = () => {
     shipping_address: ''
   })
 
-  const generateUniqueID = () => {
-
-  }
+  // Automatically set date to today
+  useEffect(() => {
+    setNewOrder({
+      ...newOrder,
+      created: generateDate()
+    })
+  }, [])
 
   const generateDate = () => {
-
+    const date = new Date()
+    return[
+      date.getFullYear(),
+      padDigits(date.getMonth() + 1),
+      padDigits(date.getDate(),)
+    ].join('-')
   } 
 
+  function padDigits(num) {
+    return num.toString().padStart(2, '0');
+  }
+
+  // Update order object
   const handleChange = (field: string, event: React.ChangeEvent<HTMLInputElement>) => {
     setNewOrder({
       ...newOrder,
@@ -51,8 +66,8 @@ export const CreateOrderComponent = () => {
   }
   
   return(
-    <Paper>
-      <Container sx={{padding: 2}}>
+    <Paper elevation={8}>
+      <Container sx={{padding: 2, marginTop: 4}}>
         <Typography variant="h2">
           Create an Order
         </Typography>
@@ -65,13 +80,14 @@ export const CreateOrderComponent = () => {
             <TextField 
               id="standard-basic" 
               variant="outlined" 
-              disabled 
+              label="ID"
               fullWidth 
               value={newOrder.id}
               sx={{marginTop: 2, marginBottom:2}}
             />
             <TextField 
               variant="outlined" 
+              label="Created"
               disabled 
               fullWidth 
               value={newOrder.created}
@@ -111,16 +127,14 @@ export const CreateOrderComponent = () => {
             />
             <TextField 
               variant="outlined" 
-              label="Condition" 
-              fullWidth 
-              sx={{marginBottom:2}}
+              label="Condition"  
+              sx={{marginBottom:2, marginRight: 7}}
               value={newOrder.condition}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {handleChange("condition", e)}}
             />
             <TextField 
               variant="outlined" 
               label="Size" 
-              fullWidth 
               sx={{marginBottom:2}}
               value={newOrder.size}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {handleChange("size", e)}}
@@ -151,6 +165,18 @@ export const CreateOrderComponent = () => {
             />
           </div>
           <div className={styles.btnContainer}>
+            <Link
+              href={{
+                pathname:'/'
+              }}
+            >
+              <Button 
+                variant="outlined"
+                sx={{marginRight: 2}}
+              >
+                Cancel
+              </Button>
+            </Link>
             <Button
               variant="contained"
               onClick={handleSubmit}

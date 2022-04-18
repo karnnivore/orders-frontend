@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { Container } from '@mui/material'
 import Orders from './orders'
+import styles from './home.module.css'
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
       
       <Container>
         <main>
-          <div className="grid">
+          <div className={styles.homeContainer}>
             <Orders/>
           </div>
         </main>

@@ -1,6 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { Button, Card, CardActionArea, CardContent, CardMedia, Collapse, IconButton, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useTransformToUpper } from '../../hooks/useTransformToUpper'
 import { IOrders } from '../../models/IOrders'
 import { StatusBadge } from './StatusBadge'
@@ -9,6 +9,7 @@ interface IOrderRow {
   rowData: IOrders
   index: number
   handleUpdateOpen: () => void
+  setOrder: Dispatch<SetStateAction<IOrders>>
 }
 export const OrderRow = (props: IOrderRow) => {
   const row = props.rowData
@@ -39,7 +40,10 @@ export const OrderRow = (props: IOrderRow) => {
           <Button
             variant='contained'
             size='small'
-            onClick={props.handleUpdateOpen}
+            onClick={() => {
+              props.handleUpdateOpen()
+              props.setOrder(props.rowData)
+            }}
           >
             Update
           </Button>

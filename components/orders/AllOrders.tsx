@@ -5,6 +5,7 @@ import { IFilters } from '../../models/IFilters'
 import { UpdateOrder } from './updateOrder/UpdateOrder'
 import { IOrders } from '../../models/IOrders'
 import styles from './css/AllOrders.module.css'
+import Link from 'next/link'
 
 interface IAllOrders {
   orderData: IOrders[]
@@ -24,6 +25,19 @@ export const AllOrders = ({
   const [open, setOpen] = useState(false)
   const handleUpdateOpen = () => setOpen(true)
   const handleUpdateClose = () => setOpen(false)
+  const [order, setOrder] = useState<IOrders>({
+    id: '',
+    created: '',
+    status: '',
+    customer: '',
+    sku: '',
+    photo: '',
+    condition: '',
+    size: '',
+    type: '',
+    origin_address: '',
+    shipping_address: ''
+  })
 
   // filter data
   useEffect(() => {
@@ -77,13 +91,19 @@ export const AllOrders = ({
   return(
     <>
       <div className={styles.btnContainer}>
-        <Button
-          variant='contained'
-          size='large'
-          color='secondary'
+        <Link
+          href={{
+            pathname:'/orders/create'
+          }}
         >
-          Create Order
-        </Button>
+          <Button
+            variant='contained'
+            size='large'
+            color='secondary'
+          >
+            Create Order
+          </Button>
+        </Link>
         </div>
     
       <TableContainer>
@@ -105,7 +125,7 @@ export const AllOrders = ({
             {(rowsPerPage > 0 
               ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : filteredData).map((row:IOrders, index: number) => (
-              <OrderRow rowData={row} index={index} key={index} handleUpdateOpen={handleUpdateOpen}/>
+              <OrderRow rowData={row} index={index} key={index} handleUpdateOpen={handleUpdateOpen} setOrder={setOrder}/>
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows}}>
@@ -124,7 +144,7 @@ export const AllOrders = ({
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <UpdateOrder open={open} handleUpdateClose={handleUpdateClose}/>
+      <UpdateOrder open={open} handleUpdateClose={handleUpdateClose} order={order}/>
     </>
   )
 }
