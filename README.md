@@ -12,6 +12,11 @@ Build an application which is able to:
 * [Vercel](https://vercel.com/)
 
 ## Setup
+The Go API will need to be run prior to the frontend applciation to the data.
+https://github.com/karnnivore/orders-api
+
+* Can also checkout frontend-test branch which includes the data in the frontend app
+
 First clone the repository locally
 
 Then npm install command in the project folder  
