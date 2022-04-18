@@ -25,6 +25,7 @@ export const AllOrders = ({
   const [open, setOpen] = useState(false)
   const handleUpdateOpen = () => setOpen(true)
   const handleUpdateClose = () => setOpen(false)
+  const [loaded, setLoaded] = useState(false)
   const [order, setOrder] = useState<IOrders>({
     id: '',
     created: '',
@@ -60,15 +61,17 @@ export const AllOrders = ({
 
   // Sort data by date created initially
   useEffect(() => {
-    let sortedOrders = orderData
+    let sortedOrders = filteredData
     sortedOrders.sort((a, b) => {
       if (Date.parse(a.created) < Date.parse(b.created)) 
-        return -1
-      if (Date.parse(a.created) > Date.parse(b.created))
         return 1
+      if (Date.parse(a.created) > Date.parse(b.created))
+        return -1
       return 0
     })
-  }, [])
+    setFilteredData(sortedOrders)
+    setLoaded(true)
+  }, [filteredData, filters])
 
   useEffect(() => {
     setEmptyRow(page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredData.length) : 0)
@@ -90,6 +93,8 @@ export const AllOrders = ({
 
   return(
     <>
+      {loaded &&
+      <>
       <div className={styles.btnContainer}>
         <Link
           href={{
@@ -145,6 +150,8 @@ export const AllOrders = ({
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <UpdateOrder open={open} handleUpdateClose={handleUpdateClose} order={order}/>
+      </>
+      }
     </>
   )
 }
