@@ -169,6 +169,7 @@ export const AllOrders = ({
         <TableCell
           onClick={() => tableHeaderSort(objName)}
           align='center'
+          key={objName}
         >
           {sortObj.sortDirection === 'asc' ? 
             <div className={styles.sortDirectionCtn}>
@@ -188,6 +189,7 @@ export const AllOrders = ({
         <TableCell
           onClick={() => tableHeaderSort(objName)}
           align={objName === 'status' ? 'center' : 'left'}
+          key={objName}
         >
           {displayString}
         </TableCell>
@@ -282,7 +284,7 @@ export const AllOrders = ({
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <UpdateOrder open={open} handleUpdateClose={handleUpdateClose} order={order}/>
+      <UpdateOrder open={open} handleUpdateClose={handleUpdateClose} order={order} filteredData={filteredData} setFilteredData={setFilteredData}/>
     </>
   )
 }

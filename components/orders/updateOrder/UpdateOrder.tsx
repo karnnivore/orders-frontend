@@ -1,5 +1,5 @@
 import { Box, Button, Modal, TextField, Typography } from "@mui/material"
-import React, { useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useTransformToUpper } from "../../../hooks/useTransformToUpper"
 import { IOrders } from "../../../models/IOrders"
 import styles from '../css/UpdateOrder.module.css'
@@ -8,11 +8,15 @@ interface IUpdateOrder {
   open: boolean
   handleUpdateClose: () => void
   order: IOrders
+  filteredData: IOrders[] 
+  setFilteredData: Dispatch<SetStateAction<IOrders[]>>
 }
 export const UpdateOrder = ({
   open,
   handleUpdateClose,
-  order
+  order,
+  filteredData,
+  setFilteredData
 }: IUpdateOrder) => {
   const [updatedOrder, setUpdatedOrder] = useState<IOrders>({
     id: '',
@@ -61,10 +65,21 @@ export const UpdateOrder = ({
       body: JSON.stringify(updatedOrder)
     }
     fetch('http://localhost:8081/update', requestOptions)
-      .then(response => console.log(response))
-      .then(data => {
-        console.log(data)
+      .then(response => {
+        console.log(response)
+        updateAllOrders()
+        handleUpdateClose()
       })
+      .then(data => {
+        console.log('response: ', data)
+      })
+  }
+
+  const updateAllOrders = () => {
+    const index = filteredData?.findIndex((order) => order.id === updatedOrder.id)
+    const updatedOrders = filteredData
+    updatedOrders[index] = updatedOrder
+    setFilteredData(updatedOrders)
   }
 
   return(
