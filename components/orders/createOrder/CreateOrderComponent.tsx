@@ -3,6 +3,7 @@ import Link from "next/link"
 import React, { useEffect, useState } from "react"
 import { IOrders } from "../../../models/IOrders"
 import styles from "../css/CreateOrderComponent.module.css"
+import { useRouter } from 'next/router'
 
 export const CreateOrderComponent = () => {
   const [newOrder, setNewOrder] = useState<IOrders>({
@@ -18,6 +19,8 @@ export const CreateOrderComponent = () => {
     origin_address: '',
     shipping_address: ''
   })
+  // next router
+  const router = useRouter()
 
   // Automatically set date to today
   useEffect(() => {
@@ -57,8 +60,11 @@ export const CreateOrderComponent = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(newOrder)
     }
-    fetch('http://localhost:8081/createOrder', requestOptions)
-      .then(response => console.log(response))
+    fetch('http://localhost:8081/create', requestOptions)
+      .then(response => {
+        console.log(response)
+        router.push('/')
+      })
       .then(data => {
         console.log(data)
       })
@@ -84,6 +90,7 @@ export const CreateOrderComponent = () => {
               fullWidth 
               value={newOrder.id}
               sx={{marginTop: 2, marginBottom:2}}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {handleChange("id", e)}}
             />
             <TextField 
               variant="outlined" 
