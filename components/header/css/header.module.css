@@ -1,0 +1,16 @@
+.headerContainer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background: #F6F6F3;
+    padding-top: 1rem;
+    z-index: 100;
+}
+
+.headerLogo {
+    margin-left: 2rem;
+}

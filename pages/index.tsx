@@ -2,10 +2,12 @@ import Head from 'next/head'
 import { Container } from '@mui/material'
 import Orders from './orders'
 import styles from './home.module.css'
+import { Header } from '../components/header'
+import { Footer } from '../components/footer'
 
 export default function Home() {
   return (
-    <div className="container">
+    <div className={`container ${styles.mainContainer}`}>
       <Head>
         <title>Boxhub | All Orders</title>
         <link rel="icon" href="/favicon.ico" />
@@ -19,13 +21,15 @@ export default function Home() {
         />
       </Head>
       
+      <Header/>
       <Container>
-        <main>
+        <main className={styles.contentContainer}>
           <div className={styles.homeContainer}>
             <Orders/>
           </div>
         </main>
       </Container>
+      <Footer/>
     </div>
   )
 }
