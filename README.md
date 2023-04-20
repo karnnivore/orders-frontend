@@ -1,5 +1,7 @@
 # Frontend Order Application: Built with Next.js and Material UI
 * [Preview](https://orders-frontend.vercel.app/)
+![image](https://user-images.githubusercontent.com/5455667/233475133-e76b2340-7c32-4954-83c8-8186ee53f2c3.png)
+
 ## Project Description
 Build an application which is able to:
 1. Show to the user all orders sorted by creation date, showing the photo and some information nearby
